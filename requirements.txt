@@ -1,0 +1,4 @@
+streamlit==1.18.0
+pandas==2.0.3
+sqlalchemy==2.0.22
+gemini==0.1.0  
