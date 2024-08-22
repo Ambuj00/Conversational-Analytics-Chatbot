@@ -2,8 +2,7 @@ import openai
 import pandas as pd
 import streamlit as st
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Float
-from openai import OpenAI
-client=OpenAI()
+
 def generate_schema(df):
     schema = ""
     for col in df.columns:
@@ -29,7 +28,7 @@ Only provide the SQL query.
 
 def generate_sql_query(natural_language_query, schema):
     prompt = construct_prompt(natural_language_query, schema)
-    response = client.completions.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",  # Use 'gpt-4' if available
         messages=[
             {"role": "system", "content": "You are an AI assistant."},
