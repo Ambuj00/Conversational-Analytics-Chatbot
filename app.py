@@ -32,7 +32,7 @@ Only provide the SQL query.
 def generate_sql_query(natural_language_query, schema, openai_api_key):
     client = openai.OpenAI(api_key=openai_api_key)  # Set API key here
     prompt = construct_prompt(natural_language_query, schema)
-    response = client.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",  # Use 'gpt-4' if available
         messages=[
             {"role": "system", "content": "You are an AI assistant."},
