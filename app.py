@@ -27,18 +27,16 @@ Only provide the SQL query.
     return prompt
 
 def generate_sql_query(natural_language_query, schema):
-    prompt = construct_prompt(natural_language_query, schema)
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Use 'gpt-4' if available
-        messages=[
-            {"role": "system", "content": "You are an AI assistant."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=150,
-        temperature=0,
-    )
-    sql_query = response.choices[0].message["content"].strip()
-    return sql_query
+  prompt = construct_prompt(natural_language_query, schema)
+  response = openai.Completion.create(
+      engine="text-davinci-003",  # Use a more suitable engine for SQL generation
+      prompt=prompt,
+      max_tokens=150,
+      temperature=0,
+  )
+  sql_query = response.choices[0].text.strip()
+  return sql_query
+
 
 def create_database_table(df, engine):
     metadata = MetaData()
