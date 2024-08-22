@@ -2,7 +2,8 @@ import openai
 import pandas as pd
 import streamlit as st
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Float
-
+from openai import OpenAI
+client=OpenAI()
 def generate_schema(df):
     schema = ""
     for col in df.columns:
