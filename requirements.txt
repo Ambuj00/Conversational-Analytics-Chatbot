@@ -3,4 +3,3 @@ pandas
 sqlalchemy
 openai
 numpy
-distutils
