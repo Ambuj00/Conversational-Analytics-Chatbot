@@ -26,19 +26,58 @@ Only provide the SQL query.
     """
     return prompt
 
+
+
+With the latest OpenAI Python API version, the openai.ChatCompletion class has been updated. The new approach uses the openai.Completion.create method for generating completions.
+
+Here's how you can update your generate_sql_query function to use the latest API:
+
+Updated Code
+python
+Copy code
+import openai
+
+def construct_prompt(natural_language_query, schema):
+    prompt = f"""
+You are an AI assistant that converts natural language to SQL queries.
+
+Here is the database schema:
+Table: data
+Columns:
+{schema}
+
+Generate a SQL query for the following request:
+"{natural_language_query}"
+
+Only provide the SQL query.
+    """
+    return prompt
+
 def generate_sql_query(natural_language_query, schema):
     prompt = construct_prompt(natural_language_query, schema)
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Use 'gpt-4' if available
-        messages=[
-            {"role": "system", "content": "You are an AI assistant."},
-            {"role": "user", "content": prompt}
-        ],
+    response = openai.Completion.create(
+        model="gpt-4",  # Use the latest model if available
+        prompt=prompt,
         max_tokens=150,
         temperature=0,
+        n=1,  # Number of completions to generate
+        stop=None  # Optional, can specify stopping tokens if needed
     )
-    sql_query = response.choices[0].message["content"].strip()
+    sql_query = response.choices[0].text.strip()
     return sql_query
+# def generate_sql_query(natural_language_query, schema):
+#     prompt = construct_prompt(natural_language_query, schema)
+#     response = openai.ChatCompletion.create(
+#         model="gpt-3.5-turbo",  # Use 'gpt-4' if available
+#         messages=[
+#             {"role": "system", "content": "You are an AI assistant."},
+#             {"role": "user", "content": prompt}
+#         ],
+#         max_tokens=150,
+#         temperature=0,
+#     )
+#     sql_query = response.choices[0].message["content"].strip()
+#     return sql_query
 
 def create_database_table(df, engine):
     metadata = MetaData()
